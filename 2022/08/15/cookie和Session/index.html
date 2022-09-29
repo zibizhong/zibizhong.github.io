@@ -1,0 +1,232 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>cookie和Session</title><meta name="keywords" content="JavaWeb"><meta name="author" content="CodeZhong"><meta name="copyright" content="CodeZhong"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="概述 会话:用户打开浏览器,访问web服务器的资源,会话建立,直到有一方断开连接,会话结束,在一起会话中可以包含多次请求和响应  会话跟踪:一种维护浏览器状态的方法,服务器需要多次请求是否来自同一浏览器,以便在同一次会话的多次请求间共享数据.  HTTP协议是无状态的,每次浏览器向服务器请求时,服务器都会将该请求视为新的请求,因此我们需要会话跟踪技术来实现会话内的数据共享.  实现方式  客户端会">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cookie和Session">
+<meta property="og:url" content="http://zibizhong.github.io/2022/08/15/cookie%E5%92%8CSession/index.html">
+<meta property="og:site_name" content="CodeZhongBlog">
+<meta property="og:description" content="概述 会话:用户打开浏览器,访问web服务器的资源,会话建立,直到有一方断开连接,会话结束,在一起会话中可以包含多次请求和响应  会话跟踪:一种维护浏览器状态的方法,服务器需要多次请求是否来自同一浏览器,以便在同一次会话的多次请求间共享数据.  HTTP协议是无状态的,每次浏览器向服务器请求时,服务器都会将该请求视为新的请求,因此我们需要会话跟踪技术来实现会话内的数据共享.  实现方式  客户端会">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://zibizhong.github.io/images/background.jpg">
+<meta property="article:published_time" content="2022-08-15T03:01:02.000Z">
+<meta property="article:modified_time" content="2022-08-15T10:13:00.156Z">
+<meta property="article:author" content="CodeZhong">
+<meta property="article:tag" content="JavaWeb">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://zibizhong.github.io/images/background.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://zibizhong.github.io/2022/08/15/cookie%E5%92%8CSession/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":500},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: CodeZhong","link":"链接: ","source":"来源: CodeZhongBlog","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://fastly.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://fastly.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'cookie和Session',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-08-15 18:13:00'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/bgc.css"><meta name="generator" content="Hexo 6.2.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="is-center"><div class="avatar-img"><img src="/img/headImg.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">CodeZhong</div><div class="author-info__description"></div></div><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/zibizhong" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="/2385172737@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-clock"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/artitalk"><i class="fa-fw fa fa-heartbeat"></i><span> 时光</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">CodeZhongBlog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-clock"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/artitalk"><i class="fa-fw fa fa-heartbeat"></i><span> 时光</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">cookie和Session</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2022-08-15T03:01:02.000Z" title="发表于 2022-08-15 11:01:02">2022-08-15</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">705</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>2分钟</span></span></div></div></div><article class="post-content" id="article-container"><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><ul>
+<li><p>会话:用户打开浏览器,访问web服务器的资源,会话建立,直到有一方断开连接,会话结束,在一起会话中可以包含<code>多次</code>请求和响应</p>
+</li>
+<li><p>会话跟踪:一种维护浏览器状态的方法,服务器需要多次请求是否来自同一浏览器,以便在同一次会话的多次请求间<code>共享</code>数据.</p>
+</li>
+<li><p>HTTP协议是<code>无状态</code>的,每次浏览器向服务器请求时,服务器都会将该请求视为<code>新</code>的请求,因此我们需要会话跟踪技术来实现会话内的数据共享.</p>
+</li>
+<li><p>实现方式</p>
+<ol>
+<li>客户端会话跟踪技术:<code>Cookie</code></li>
+<li>服务端会话跟踪技术:<code>Session</code></li>
+</ol>
+</li>
+</ul>
+<h2 id="Cookie"><a href="#Cookie" class="headerlink" title="Cookie"></a>Cookie</h2><h3 id="Cookie基本使用"><a href="#Cookie基本使用" class="headerlink" title="Cookie基本使用"></a>Cookie基本使用</h3><ul>
+<li><p>Cookie:客户端会话技术,将数据保存到客户端,以后每次请求都携带Cookie数据进行访问</p>
+</li>
+<li><p>Cookie基本使用</p>
+</li>
+<li><p>发送Cookie</p>
+<ol>
+<li><p>创建Cookie对象设置数据</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Cookie</span> <span class="variable">cookie</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Cookie</span>(<span class="string">&quot;key&quot;</span>,<span class="string">&quot;value&quot;</span>);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>发送Cookie到客户端,使用response对象</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">response.addCookie(cookie);</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+<li><p>接收Cookie</p>
+<ol>
+<li><p>获取Cookie数组</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Cookie[] cookies = request.getCookies();</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>遍历数组</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (Cookie cookie : cookies) &#123;</span><br><span class="line">            <span class="type">String</span> <span class="variable">name</span> <span class="operator">=</span> cookie.getName();</span><br><span class="line">            <span class="keyword">if</span> (<span class="string">&quot;username&quot;</span>.equals(name))&#123;</span><br><span class="line">                <span class="type">String</span> <span class="variable">value</span> <span class="operator">=</span> cookie.getValue();</span><br><span class="line">                System.out.println(name+<span class="string">&quot;:&quot;</span>+value);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+</ul>
+<h3 id="Cookie原理"><a href="#Cookie原理" class="headerlink" title="Cookie原理"></a>Cookie原理</h3><ul>
+<li>Cookie的实现是基于HTTP协议的<ul>
+<li>响应头:set-cookie</li>
+<li>请求头:cookie</li>
+</ul>
+</li>
+</ul>
+<h3 id="使用细节"><a href="#使用细节" class="headerlink" title="使用细节"></a>使用细节</h3><ul>
+<li><p>Cookie存活时间</p>
+<pre><code>1. 默认情况下Cookie存储在浏览器内存中,浏览器关闭Cookie即消失
+   2. SetMaxAge(int seconds):设置Cookie存活时间
+          1. 正数:将cookie写入浏览器所在的电脑硬盘,持久化存储,到时间自动删除
+          2. 负数:默认,Cookie写入浏览器内存,浏览器关闭,销毁
+          3. 零:删除对应cookie
+</code></pre>
+</li>
+<li><p>Cookie存储中文</p>
+<ul>
+<li><p>Cookie不能直接存储中文</p>
+</li>
+<li><p>使用URL编码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">value= URLEncoder.encode(value,<span class="string">&quot;UTF-8&quot;</span>);</span><br><span class="line">       value=URLDecoder.decode(value,<span class="string">&quot;UTF-8&quot;</span>);</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<h2 id="Session"><a href="#Session" class="headerlink" title="Session"></a>Session</h2><ul>
+<li><p>服务端会话跟踪技术:将数据保存到服务端</p>
+</li>
+<li><p>JAVAEE提供HttpSession接口,来实现一次会话的多次请求间数据共享功能</p>
+</li>
+</ul>
+<h3 id="Session基本使用"><a href="#Session基本使用" class="headerlink" title="Session基本使用"></a>Session基本使用</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span> 获取session对象</span><br><span class="line">   <span class="type">HttpSession</span> <span class="variable">session</span> <span class="operator">=</span> req.getSession();</span><br><span class="line"><span class="number">2.</span> Session对象功能</span><br><span class="line">   <span class="number">1.</span><span class="keyword">void</span> <span class="title function_">setAttribute</span><span class="params">(String var1, Object var2)</span>; <span class="comment">//存储数据到session域中</span></span><br><span class="line">   <span class="number">2.</span>Object <span class="title function_">getAttribute</span><span class="params">(String var1)</span>; <span class="comment">//根据key获取值</span></span><br><span class="line">   <span class="number">3.</span><span class="keyword">void</span> <span class="title function_">removeAttribute</span><span class="params">(String var1)</span>; <span class="comment">//根据key删除键值对</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Session原理"><a href="#Session原理" class="headerlink" title="Session原理"></a>Session原理</h3><ul>
+<li><p>Session是基于Cookie实现的</p>
+<p><img src="/2022/08/15/cookie%E5%92%8CSession/image-20220815120944437.png" alt="image-20220815120944437"></p>
+</li>
+</ul>
+<h3 id="Session使用细节"><a href="#Session使用细节" class="headerlink" title="Session使用细节"></a>Session使用细节</h3><ul>
+<li><p>Session钝化、活化</p>
+<ul>
+<li>服务器重启后,Session中的数据是否还存在? 存在<ul>
+<li>钝化:在服务器正常关闭时,Tomcat会自动将Session数据写入硬盘的文件中</li>
+<li>活化:再次启动服务器后,从文件加载数据到Session中</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Session销毁</p>
+<ul>
+<li><p>默认情况下无操作30分钟自动销毁</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">session-config</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">session-timeout</span>&gt;</span>30<span class="tag">&lt;/<span class="name">session-timeout</span>&gt;</span> web.xml中单位为分钟</span><br><span class="line"><span class="tag">&lt;/<span class="name">session-config</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>调用</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">session.invalidate();</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">CodeZhong</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://zibizhong.github.io/2022/08/15/cookie%E5%92%8CSession/">http://zibizhong.github.io/2022/08/15/cookie%E5%92%8CSession/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://zibizhong.github.io" target="_blank">CodeZhongBlog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/JavaWeb/">JavaWeb</a></div><div class="post_share"><div class="social-share" data-image="/images/background.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://fastly.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/08/15/%E8%BF%87%E6%BB%A4%E5%99%A8%E5%92%8C%E7%9B%91%E5%90%AC%E5%99%A8/"><img class="prev-cover" src="/images/background.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">过滤器和监听器</div></div></a></div><div class="next-post pull-right"><a href="/2022/08/14/MVC%E4%B8%89%E5%B1%82%E6%9E%B6%E6%9E%84/"><img class="next-cover" src="/images/background.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">MVC三层架构</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2022/08/14/JSP/" title="JSP"><img class="cover" src="/images/background.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-08-14</div><div class="title">JSP</div></div></a></div><div><a href="/2022/08/14/MVC%E4%B8%89%E5%B1%82%E6%9E%B6%E6%9E%84/" title="MVC三层架构"><img class="cover" src="/images/background.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-08-14</div><div class="title">MVC三层架构</div></div></a></div><div><a href="/2022/08/17/RESTf%E9%A3%8E%E6%A0%BC/" title="RESTf风格"><img class="cover" src="/images/background.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-08-17</div><div class="title">RESTf风格</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Cookie"><span class="toc-number">2.</span> <span class="toc-text">Cookie</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Cookie%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8"><span class="toc-number">2.1.</span> <span class="toc-text">Cookie基本使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Cookie%E5%8E%9F%E7%90%86"><span class="toc-number">2.2.</span> <span class="toc-text">Cookie原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E7%BB%86%E8%8A%82"><span class="toc-number">2.3.</span> <span class="toc-text">使用细节</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Session"><span class="toc-number">3.</span> <span class="toc-text">Session</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Session%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8"><span class="toc-number">3.1.</span> <span class="toc-text">Session基本使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Session%E5%8E%9F%E7%90%86"><span class="toc-number">3.2.</span> <span class="toc-text">Session原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Session%E4%BD%BF%E7%94%A8%E7%BB%86%E8%8A%82"><span class="toc-number">3.3.</span> <span class="toc-text">Session使用细节</span></a></li></ol></li></ol></div></div><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/headImg.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">CodeZhong</div><div class="author-info__description"></div></div><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/zibizhong" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="/2385172737@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">微信公众号: 自闭钟同学</div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2022 By CodeZhong</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/chenxz21/hexo-theme-bcxm">Bcxm</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">本地搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://fastly.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script type="text/javascript" src="https://fastly.jsdelivr.net/npm/leancloud-storage@4.10.0/dist/av-min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://fastly.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-nest.min.js"></script><script id="click-heart" src="https://fastly.jsdelivr.net/npm/butterfly-extsrc@1/dist/click-heart.min.js" async="async" mobile="false"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

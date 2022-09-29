@@ -1,0 +1,195 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Java进阶</title><meta name="author" content="CodeZhong"><meta name="copyright" content="CodeZhong"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="异常和处理throws 将异常抛出给方法调用者  try…catch捕获异常 对出现代码的异常进行处理  当出现错误时catch执行,不影响后续代码执行 自定义异常编译时异常继承Exception 使用super的默认构造器 编译时异常继承RuntimeException 集合ArrayList常用方法123456789101112&#x2F;&#x2F;创建ArrayList list &#x3D; new ArrayLis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java进阶">
+<meta property="og:url" content="http://zibizhong.github.io/2022/09/04/Java%E8%BF%9B%E9%98%B6/index.html">
+<meta property="og:site_name" content="CodeZhongBlog">
+<meta property="og:description" content="异常和处理throws 将异常抛出给方法调用者  try…catch捕获异常 对出现代码的异常进行处理  当出现错误时catch执行,不影响后续代码执行 自定义异常编译时异常继承Exception 使用super的默认构造器 编译时异常继承RuntimeException 集合ArrayList常用方法123456789101112&#x2F;&#x2F;创建ArrayList list &#x3D; new ArrayLis">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://zibizhong.github.io/images/background.jpg">
+<meta property="article:published_time" content="2022-09-04T08:19:04.000Z">
+<meta property="article:modified_time" content="2022-09-04T09:28:36.806Z">
+<meta property="article:author" content="CodeZhong">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://zibizhong.github.io/images/background.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://zibizhong.github.io/2022/09/04/Java%E8%BF%9B%E9%98%B6/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":500},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: CodeZhong","link":"链接: ","source":"来源: CodeZhongBlog","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://fastly.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://fastly.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Java进阶',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-09-04 17:28:36'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/bgc.css"><meta name="generator" content="Hexo 6.2.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="is-center"><div class="avatar-img"><img src="/img/headImg.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">CodeZhong</div><div class="author-info__description"></div></div><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/zibizhong" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="/2385172737@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-clock"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/artitalk"><i class="fa-fw fa fa-heartbeat"></i><span> 时光</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">CodeZhongBlog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-clock"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/artitalk"><i class="fa-fw fa fa-heartbeat"></i><span> 时光</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">Java进阶</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2022-09-04T08:19:04.000Z" title="发表于 2022-09-04 16:19:04">2022-09-04</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">907</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>3分钟</span></span></div></div></div><article class="post-content" id="article-container"><h2 id="异常和处理"><a href="#异常和处理" class="headerlink" title="异常和处理"></a>异常和处理</h2><h3 id="throws"><a href="#throws" class="headerlink" title="throws"></a>throws</h3><blockquote>
+<p>将异常抛出给方法调用者</p>
+</blockquote>
+<h3 id="try…catch捕获异常"><a href="#try…catch捕获异常" class="headerlink" title="try…catch捕获异常"></a>try…catch捕获异常</h3><blockquote>
+<p>对出现代码的异常进行处理</p>
+</blockquote>
+<p>当出现错误时catch执行,不影响后续代码执行</p>
+<h3 id="自定义异常"><a href="#自定义异常" class="headerlink" title="自定义异常"></a>自定义异常</h3><h3 id="编译时异常"><a href="#编译时异常" class="headerlink" title="编译时异常"></a>编译时异常</h3><p>继承Exception 使用super的默认构造器</p>
+<h3 id="编译时异常-1"><a href="#编译时异常-1" class="headerlink" title="编译时异常"></a>编译时异常</h3><p>继承RuntimeException</p>
+<h2 id="集合"><a href="#集合" class="headerlink" title="集合"></a>集合</h2><h3 id="ArrayList"><a href="#ArrayList" class="headerlink" title="ArrayList"></a>ArrayList</h3><h4 id="常用方法"><a href="#常用方法" class="headerlink" title="常用方法"></a>常用方法</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建</span></span><br><span class="line"><span class="type">ArrayList</span> <span class="variable">list</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ArrayList</span>(); <span class="comment">//不限定类型</span></span><br><span class="line">ArrayList&lt;指定数据类型&gt; list = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;(); <span class="comment">//指定数据类型</span></span><br><span class="line"><span class="comment">//常用方法</span></span><br><span class="line"><span class="type">boolean</span> <span class="title function_">add</span><span class="params">(E e)</span> <span class="comment">//添加元素</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">add</span><span class="params">(<span class="type">int</span> index,E element)</span> <span class="comment">//往指定索引位置添加元素</span></span><br><span class="line"><span class="type">boolean</span> <span class="title function_">remove</span><span class="params">(Object o)</span><span class="comment">//删除元素</span></span><br><span class="line">E <span class="title function_">remove</span><span class="params">(<span class="type">int</span> index)</span><span class="comment">//删除指定位置元素,返回值为被删除的元素</span></span><br><span class="line">E <span class="title function_">set</span><span class="params">(<span class="type">int</span> index,E element)</span> <span class="comment">//修改指定索引位置的元素 返回值为修改前的元素</span></span><br><span class="line">E <span class="title function_">get</span><span class="params">(<span class="type">int</span> index)</span><span class="comment">//根据索引获取元素 返回值为该元素</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">size</span><span class="params">()</span> <span class="comment">//获取元素个数</span></span><br><span class="line"><span class="type">boolean</span> <span class="title function_">contains</span><span class="params">(object o)</span> <span class="comment">//判断集合中是否存在某个元素</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="遍历"><a href="#遍历" class="headerlink" title="遍历"></a>遍历</h4><blockquote>
+<p>使用迭代器遍历,不要在迭代器中修改元素,会出现并非异常</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Iterator&lt;T&gt; it=list.iterator();</span><br><span class="line">it.hasNext() <span class="comment">//是否有下个元素</span></span><br><span class="line">it.Next() <span class="comment">//获取下个元素</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>使用for循环修改需要逆序</p>
+<p>foreach</p>
+<p>toArray遍历</p>
+</blockquote>
+<h3 id="LinkedList"><a href="#LinkedList" class="headerlink" title="LinkedList"></a>LinkedList</h3><p>常用方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">LinkedList</span> <span class="variable">list</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">LinkedList</span>&lt;&gt;();<span class="comment">//不限定类型</span></span><br><span class="line">LinkedList&lt;T&gt; list = <span class="keyword">new</span> <span class="title class_">LinkedList</span>&lt;&gt;();<span class="comment">//限定类型</span></span><br><span class="line"><span class="type">boolean</span> <span class="title function_">add</span><span class="params">(E e)</span> <span class="comment">//添加元素</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">add</span><span class="params">(<span class="type">int</span> index,E element)</span> <span class="comment">//往指定索引位置添加元素</span></span><br><span class="line"><span class="type">boolean</span> <span class="title function_">remove</span><span class="params">(Object o)</span><span class="comment">//删除元素</span></span><br><span class="line">E <span class="title function_">remove</span><span class="params">(<span class="type">int</span> index)</span><span class="comment">//删除指定位置元素,返回值为被删除的元素</span></span><br><span class="line">E <span class="title function_">set</span><span class="params">(<span class="type">int</span> index,E element)</span> <span class="comment">//修改指定索引位置的元素 返回值为修改前的元素</span></span><br><span class="line">E <span class="title function_">get</span><span class="params">(<span class="type">int</span> index)</span><span class="comment">//根据索引获取元素 返回值为该元素</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">size</span><span class="params">()</span> <span class="comment">//获取元素个数</span></span><br><span class="line"><span class="type">boolean</span> <span class="title function_">contains</span><span class="params">(object o)</span> <span class="comment">//判断集合中是否存在某个元素</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="遍历-1"><a href="#遍历-1" class="headerlink" title="遍历"></a>遍历</h4><p>同ArrayList</p>
+<h3 id="ArrayList和LinkedList区别"><a href="#ArrayList和LinkedList区别" class="headerlink" title="ArrayList和LinkedList区别"></a>ArrayList和LinkedList区别</h3><blockquote>
+<p>ArrayList使用数组存储 查找快,增删慢</p>
+<p>LinkedList使用链表存储 增删快,查找慢</p>
+</blockquote>
+<h3 id="Set"><a href="#Set" class="headerlink" title="Set"></a>Set</h3><blockquote>
+<p>不重复</p>
+<p>没有索引</p>
+</blockquote>
+<h4 id="HashSet"><a href="#HashSet" class="headerlink" title="HashSet"></a>HashSet</h4><blockquote>
+<p>采用哈希表存储</p>
+<p>存储元素的顺序和遍历获取的顺序可以不一致</p>
+<p>没有索引</p>
+<p>集合没有重复元素</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">HashSet&lt;T&gt; set = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line">add(E e);<span class="comment">//添加</span></span><br><span class="line">remove(object o);<span class="comment">//删除元素</span></span><br><span class="line">contains(object o);<span class="comment">//判断元素是否存在</span></span><br></pre></td></tr></table></figure>
+
+<p>遍历 数组 迭代器</p>
+<h3 id="Map"><a href="#Map" class="headerlink" title="Map"></a>Map</h3><blockquote>
+<p>Map接口为双列集合</p>
+<p>interface Map&lt;K,V&gt;;</p>
+<p>key 不重复</p>
+</blockquote>
+<h3 id="HashMap"><a href="#HashMap" class="headerlink" title="HashMap"></a>HashMap</h3><ul>
+<li>哈希表存储</li>
+<li>存储元素的顺序和遍历获取顺序可能不一致</li>
+<li>key唯一</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">HashMap&lt;k,v&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>();</span><br><span class="line">V <span class="title function_">put</span><span class="params">(K,V)</span>;<span class="comment">//添加元素 不存在添加 存在修改 返回修改前的v</span></span><br><span class="line">V <span class="title function_">get</span><span class="params">(object key)</span>;<span class="comment">//根据key获取value</span></span><br><span class="line">V <span class="title function_">remove</span><span class="params">(object key)</span>;<span class="comment">//根据key删除 返回删除的value</span></span><br><span class="line">containskey(key);<span class="comment">//判断key是否存在</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">size</span><span class="params">()</span>;<span class="comment">//个数</span></span><br><span class="line">clear();<span class="comment">//清楚所有</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="遍历-2"><a href="#遍历-2" class="headerlink" title="遍历"></a>遍历</h4><p>使用entry获取一个set集合用set集合的办法遍历</p>
+<p>使用keySet获取为set集合通过key获取值</p>
+<h2 id="IO"><a href="#IO" class="headerlink" title="IO"></a>IO</h2><h3 id="创建File对象"><a href="#创建File对象" class="headerlink" title="创建File对象"></a>创建File对象</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">File(String pathname);<span class="comment">//通过字符串的路径来创建对象</span></span><br><span class="line">File(String parent,String child);<span class="comment">//通过父目录的路径和文件名称来创建对象</span></span><br><span class="line">File(File parent,String child);<span class="comment">//通过父目录的路径和文件名称来创建</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="常用方法-1"><a href="#常用方法-1" class="headerlink" title="常用方法"></a>常用方法</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">createNewFile();<span class="comment">//创建文件 传入路径</span></span><br><span class="line">mkdir();<span class="comment">//创建文件夹</span></span><br><span class="line">mkdirs();<span class="comment">//父目录不存在自动创建父目录</span></span><br><span class="line">exists();<span class="comment">//判断是否存在</span></span><br><span class="line">isFile();<span class="comment">//判断是否为文件</span></span><br><span class="line">isDirectory();<span class="comment">//是否为文件夹</span></span><br><span class="line"><span class="type">long</span> <span class="title function_">length</span><span class="params">()</span>;<span class="comment">//文件大小</span></span><br><span class="line">getName();<span class="comment">//获取名字</span></span><br><span class="line">File <span class="title function_">getParentFile</span><span class="params">()</span>;<span class="comment">//获取父目录的File对象</span></span><br><span class="line">String <span class="title function_">getAbsoultePath</span><span class="params">()</span>;<span class="comment">//获取File对象的绝对路径</span></span><br><span class="line">File[] listFiles();<span class="comment">//获取所有文件和文件夹对象</span></span><br></pre></td></tr></table></figure>
+
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">CodeZhong</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://zibizhong.github.io/2022/09/04/Java%E8%BF%9B%E9%98%B6/">http://zibizhong.github.io/2022/09/04/Java%E8%BF%9B%E9%98%B6/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://zibizhong.github.io" target="_blank">CodeZhongBlog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="/images/background.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://fastly.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/09/05/elasticsearch/"><img class="prev-cover" src="/images/background.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">elasticsearch</div></div></a></div><div class="next-post pull-right"><a href="/2022/09/01/%E8%8B%A5%E4%BE%9D/"><img class="next-cover" src="/images/background.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">若依</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8%E5%92%8C%E5%A4%84%E7%90%86"><span class="toc-number">1.</span> <span class="toc-text">异常和处理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#throws"><span class="toc-number">1.1.</span> <span class="toc-text">throws</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#try%E2%80%A6catch%E6%8D%95%E8%8E%B7%E5%BC%82%E5%B8%B8"><span class="toc-number">1.2.</span> <span class="toc-text">try…catch捕获异常</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%BC%82%E5%B8%B8"><span class="toc-number">1.3.</span> <span class="toc-text">自定义异常</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E8%AF%91%E6%97%B6%E5%BC%82%E5%B8%B8"><span class="toc-number">1.4.</span> <span class="toc-text">编译时异常</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E8%AF%91%E6%97%B6%E5%BC%82%E5%B8%B8-1"><span class="toc-number">1.5.</span> <span class="toc-text">编译时异常</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9B%86%E5%90%88"><span class="toc-number">2.</span> <span class="toc-text">集合</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ArrayList"><span class="toc-number">2.1.</span> <span class="toc-text">ArrayList</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-number">2.1.1.</span> <span class="toc-text">常用方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%81%8D%E5%8E%86"><span class="toc-number">2.1.2.</span> <span class="toc-text">遍历</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LinkedList"><span class="toc-number">2.2.</span> <span class="toc-text">LinkedList</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%81%8D%E5%8E%86-1"><span class="toc-number">2.2.1.</span> <span class="toc-text">遍历</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ArrayList%E5%92%8CLinkedList%E5%8C%BA%E5%88%AB"><span class="toc-number">2.3.</span> <span class="toc-text">ArrayList和LinkedList区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Set"><span class="toc-number">2.4.</span> <span class="toc-text">Set</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#HashSet"><span class="toc-number">2.4.1.</span> <span class="toc-text">HashSet</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Map"><span class="toc-number">2.5.</span> <span class="toc-text">Map</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HashMap"><span class="toc-number">2.6.</span> <span class="toc-text">HashMap</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%81%8D%E5%8E%86-2"><span class="toc-number">2.6.1.</span> <span class="toc-text">遍历</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IO"><span class="toc-number">3.</span> <span class="toc-text">IO</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BAFile%E5%AF%B9%E8%B1%A1"><span class="toc-number">3.1.</span> <span class="toc-text">创建File对象</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95-1"><span class="toc-number">3.1.1.</span> <span class="toc-text">常用方法</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/headImg.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">CodeZhong</div><div class="author-info__description"></div></div><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/zibizhong" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="/2385172737@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">微信公众号: 自闭钟同学</div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2022 By CodeZhong</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/chenxz21/hexo-theme-bcxm">Bcxm</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">本地搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://fastly.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script type="text/javascript" src="https://fastly.jsdelivr.net/npm/leancloud-storage@4.10.0/dist/av-min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://fastly.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-nest.min.js"></script><script id="click-heart" src="https://fastly.jsdelivr.net/npm/butterfly-extsrc@1/dist/click-heart.min.js" async="async" mobile="false"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
