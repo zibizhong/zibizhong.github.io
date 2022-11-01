@@ -1,0 +1,287 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Nginx</title><meta name="author" content="CodeZhong"><meta name="copyright" content="CodeZhong"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="一、HTTP服务器Nginx本身也是一个静态资源的服务器，当只有静态资源的时候，就可以使用Nginx来做服务器，如果一个网站只是静态页面的话，那么就可以通过这种方式来实现部署。 1、 首先在文档根目录Docroot(&#x2F;usr&#x2F;local&#x2F;var&#x2F;www)下创建html目录, 然后在html中放一个test.html; 2、 配置nginx.conf中的server 1234567891011121">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nginx">
+<meta property="og:url" content="http://zibizhong.github.io/2022/11/01/Nginx/index.html">
+<meta property="og:site_name" content="CodeZhongBlog">
+<meta property="og:description" content="一、HTTP服务器Nginx本身也是一个静态资源的服务器，当只有静态资源的时候，就可以使用Nginx来做服务器，如果一个网站只是静态页面的话，那么就可以通过这种方式来实现部署。 1、 首先在文档根目录Docroot(&#x2F;usr&#x2F;local&#x2F;var&#x2F;www)下创建html目录, 然后在html中放一个test.html; 2、 配置nginx.conf中的server 1234567891011121">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://zibizhong.github.io/images/background.jpg">
+<meta property="article:published_time" content="2022-11-01T06:56:18.000Z">
+<meta property="article:modified_time" content="2022-11-01T07:00:34.586Z">
+<meta property="article:author" content="CodeZhong">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://zibizhong.github.io/images/background.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://zibizhong.github.io/2022/11/01/Nginx/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":500},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: CodeZhong","link":"链接: ","source":"来源: CodeZhongBlog","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://fastly.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://fastly.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Nginx',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-11-01 15:00:34'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/bgc.css"><meta name="generator" content="Hexo 6.2.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="is-center"><div class="avatar-img"><img src="/img/headImg.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">CodeZhong</div><div class="author-info__description"></div></div><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/zibizhong" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="/2385172737@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-clock"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/artitalk"><i class="fa-fw fa fa-heartbeat"></i><span> 时光</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">CodeZhongBlog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-clock"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/artitalk"><i class="fa-fw fa fa-heartbeat"></i><span> 时光</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">Nginx</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2022-11-01T06:56:18.000Z" title="发表于 2022-11-01 14:56:18">2022-11-01</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.9k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>13分钟</span></span></div></div></div><article class="post-content" id="article-container"><h2 id="一、HTTP服务器"><a href="#一、HTTP服务器" class="headerlink" title="一、HTTP服务器"></a><strong>一、HTTP服务器</strong></h2><p>Nginx本身也是一个静态资源的服务器，当只有静态资源的时候，就可以使用Nginx来做服务器，如果一个网站只是静态页面的话，那么就可以通过这种方式来实现部署。</p>
+<p>1、 首先在文档根目录<code>Docroot(/usr/local/var/www)</code>下创建html目录, 然后在html中放一个test.html;</p>
+<p>2、 配置<code>nginx.conf</code>中的server</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">user mengday staff;</span><br><span class="line"></span><br><span class="line">http &#123;</span><br><span class="line">    server &#123;</span><br><span class="line">        listen       80;</span><br><span class="line">        server_name  localhost;</span><br><span class="line">        client_max_body_size 1024M;</span><br><span class="line"></span><br><span class="line">        # 默认location</span><br><span class="line">        location / &#123;</span><br><span class="line">            root   /usr/local/var/www/html;</span><br><span class="line">            index  index.html index.htm;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>3、访问测试</p>
+<ul>
+<li><code>http://localhost/</code> 指向<code>/usr/local/var/www/index.html</code>, index.html是安装nginx自带的html</li>
+<li><code>http://localhost/test.html</code> 指向<code>/usr/local/var/www/html/test.html</code></li>
+</ul>
+<blockquote>
+<p>注意：如果访问图片出现403 Forbidden错误，可能是因为nginx.conf 的第一行user配置不对，默认是#user nobody;是注释的，linux下改成user root; macos下改成user 用户名 所在组; 然后重新加载配置文件或者重启，再试一下就可以了， 用户名可以通过who am i 命令来查看。</p>
+</blockquote>
+<p>4、指令简介</p>
+<ul>
+<li>server : 用于定义服务，http中可以有多个server块</li>
+<li>listen : 指定服务器侦听请求的IP地址和端口，如果省略地址，服务器将侦听所有地址，如果省略端口，则使用标准端口</li>
+<li>server_name : 服务名称，用于配置域名</li>
+<li>location : 用于配置映射路径uri对应的配置，一个server中可以有多个location, location后面跟一个uri,可以是一个正则表达式, &#x2F; 表示匹配任意路径, 当客户端访问的路径满足这个uri时就会执行location块里面的代码</li>
+<li>root : 根路径，当访问<code>http://localhost/test.html</code>，“&#x2F;test.html”会匹配到”&#x2F;”uri, 找到root为<code>/usr/local/var/www/html</code>，用户访问的资源物理地址&#x3D;<code>root + uri = /usr/local/var/www/html + /test.html=/usr/local/var/www/html/test.html</code></li>
+<li>index : 设置首页，当只访问<code>server_name</code>时后面不跟任何路径是不走root直接走index指令的；如果访问路径中没有指定具体的文件，则返回index设置的资源，如果访问<code>http://localhost/html/</code> 则默认返回index.html</li>
+</ul>
+<p>5、location uri正则表达式</p>
+<ul>
+<li><code>.</code> ：匹配除换行符以外的任意字符</li>
+<li><code>?</code> ：重复0次或1次</li>
+<li><code>+</code> ：重复1次或更多次</li>
+<li><code>*</code> ：重复0次或更多次</li>
+<li><code>\d</code> ：匹配数字</li>
+<li><code>^</code> ：匹配字符串的开始</li>
+<li><code>$</code> ：匹配字符串的结束</li>
+<li><code>&#123;n&#125;</code> ：重复n次</li>
+<li><code>&#123;n,&#125;</code> ：重复n次或更多次</li>
+<li><code>[c]</code> ：匹配单个字符c</li>
+<li><code>[a-z]</code> ：匹配a-z小写字母的任意一个</li>
+<li><code>(a|b|c)</code> : 属线表示匹配任意一种情况，每种情况使用竖线分隔，一般使用小括号括括住，匹配符合a字符 或是b字符 或是c字符的字符串</li>
+<li><code>\</code> 反斜杠：用于转义特殊字符</li>
+</ul>
+<p>小括号()之间匹配的内容，可以在后面通过<code>$1</code>来引用，<code>$2</code>表示的是前面第二个()里的内容。正则里面容易让人困惑的是<code>\</code>转义特殊字符。</p>
+<h2 id="二、静态服务器"><a href="#二、静态服务器" class="headerlink" title="二、静态服务器"></a><strong>二、静态服务器</strong></h2><p>在公司中经常会遇到静态服务器，通常会提供一个上传的功能，其他应用如果需要静态资源就从该静态服务器中获取。</p>
+<p>1、在<code>/usr/local/var/www</code> 下分别创建images和img目录，分别在每个目录下放一张<code>test.jpg</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">http &#123;</span><br><span class="line">    server &#123;</span><br><span class="line">        listen       80;</span><br><span class="line">        server_name  localhost;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        set $doc_root /usr/local/var/www;</span><br><span class="line"></span><br><span class="line">        # 默认location</span><br><span class="line">        location / &#123;</span><br><span class="line">            root   /usr/local/var/www/html;</span><br><span class="line">            index  index.html index.htm;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        location ^~ /images/ &#123;</span><br><span class="line">            root $doc_root;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       location ~* \.(gif|jpg|jpeg|png|bmp|ico|swf|css|js)$ &#123;</span><br><span class="line">           root $doc_root/img;</span><br><span class="line">       &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>自定义变量使用set指令，语法 set 变量名值;引用使用变量名值;引用使用变量名; 这里自定义了doc_root变量。</p>
+<p>静态服务器location的映射一般有两种方式：</p>
+<ul>
+<li>使用路径，如 &#x2F;images&#x2F; 一般图片都会放在某个图片目录下，</li>
+<li>使用后缀，如 .jpg、.png 等后缀匹配模式</li>
+</ul>
+<p>访问<code>http://localhost/test.jpg</code> 会映射到 <code>$doc_root/img</code></p>
+<p>访问<code>http://localhost/images/test.jpg</code> 当同一个路径满足多个location时，优先匹配优先级高的location，由于<code>^~</code> 的优先级大于 <code>~</code>, 所以会走<code>/images/</code>对应的location</p>
+<p>常见的location路径映射路径有以下几种：</p>
+<ul>
+<li><code>=</code>   进行普通字符精确匹配。也就是完全匹配。</li>
+<li><code>^~</code>   前缀匹配。如果匹配成功，则不再匹配其他location。</li>
+<li><code>~</code>   表示执行一个正则匹配，区分大小写</li>
+<li><code>~*</code>   表示执行一个正则匹配，不区分大小写</li>
+<li><code>/xxx/</code> 常规字符串路径匹配</li>
+<li><code>/</code>   通用匹配，任何请求都会匹配到</li>
+</ul>
+<h4 id="location优先级"><a href="#location优先级" class="headerlink" title="location优先级"></a>location优先级</h4><p>当一个路径匹配多个location时究竟哪个location能匹配到时有优先级顺序的，而优先级的顺序于location值的表达式类型有关，和在配置文件中的先后顺序无关。相同类型的表达式，字符串长的会优先匹配。</p>
+<p>以下是按优先级排列说明：</p>
+<ul>
+<li>等号类型（&#x3D;）的优先级最高。一旦匹配成功，则不再查找其他匹配项，停止搜索。</li>
+<li><code>^~</code>类型表达式，不属于正则表达式。一旦匹配成功，则不再查找其他匹配项，停止搜索。</li>
+<li>正则表达式类型（<code>~ ~*</code>）的优先级次之。如果有多个location的正则能匹配的话，则使用正则表达式最长的那个。</li>
+<li>常规字符串匹配类型。按前缀匹配。</li>
+<li>&#x2F; 通用匹配，如果没有匹配到，就匹配通用的</li>
+</ul>
+<p>优先级搜索问题：不同类型的location映射决定是否继续向下搜索</p>
+<ul>
+<li>等号类型、<code>^~</code>类型：一旦匹配上就停止搜索了，不会再匹配其他location了</li>
+<li>正则表达式类型(<code>~ ~*</code>）,常规字符串匹配类型<code>/xxx/</code> : 匹配到之后，还会继续搜索其他其它location，直到找到优先级最高的，或者找到第一种情况而停止搜索</li>
+</ul>
+<p>location优先级从高到底：</p>
+<p>(<code>location =</code>) &gt; (<code>location 完整路径</code>) &gt; (<code>location ^~ 路径</code>) &gt; (<code>location ~,~* 正则顺序</code>) &gt; (<code>location 部分起始路径</code>) &gt; (<code>/</code>)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">location = / &#123;</span><br><span class="line">    # 精确匹配/，主机名后面不能带任何字符串 /</span><br><span class="line">    [ configuration A ]</span><br><span class="line">&#125;</span><br><span class="line">location / &#123;</span><br><span class="line">    # 匹配所有以 / 开头的请求。</span><br><span class="line">    # 但是如果有更长的同类型的表达式，则选择更长的表达式。</span><br><span class="line">    # 如果有正则表达式可以匹配，则优先匹配正则表达式。</span><br><span class="line">    [ configuration B ]</span><br><span class="line">&#125;</span><br><span class="line">location /documents/ &#123;</span><br><span class="line">    # 匹配所有以 /documents/ 开头的请求，匹配符合以后，还要继续往下搜索。</span><br><span class="line">    # 但是如果有更长的同类型的表达式，则选择更长的表达式。</span><br><span class="line">    # 如果有正则表达式可以匹配，则优先匹配正则表达式。</span><br><span class="line">    [ configuration C ]</span><br><span class="line">&#125;</span><br><span class="line">location ^~ /images/ &#123;</span><br><span class="line">    # 匹配所有以 /images/ 开头的表达式，如果匹配成功，则停止匹配查找，停止搜索。</span><br><span class="line">    # 所以，即便有符合的正则表达式location，也不会被使用</span><br><span class="line">    [ configuration D ]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">location ~* \.(gif|jpg|jpeg)$ &#123;</span><br><span class="line">    # 匹配所有以 gif jpg jpeg结尾的请求。</span><br><span class="line">    # 但是 以 /images/开头的请求，将使用 Configuration D，D具有更高的优先级</span><br><span class="line">    [ configuration E ]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">location /images/ &#123;</span><br><span class="line">    # 字符匹配到 /images/，还会继续往下搜索</span><br><span class="line">    [ configuration F ]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">location = /test.htm &#123;</span><br><span class="line">    root   /usr/local/var/www/htm;</span><br><span class="line">    index  index.htm;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意：location的优先级与location配置的位置无关</p>
+<h2 id="三、反向代理"><a href="#三、反向代理" class="headerlink" title="三、反向代理"></a><strong>三、反向代理</strong></h2><p>反向代理应该是Nginx使用最多的功能了，反向代理(Reverse Proxy)方式是指以代理服务器来接受internet上的连接请求，然后将请求转发给内部网络上的服务器，并将从服务器上得到的结果返回给internet上请求连接的客户端，此时代理服务器对外就表现为一个反向代理服务器。</p>
+<p>简单来说就是真实的服务器不能直接被外部网络访问，所以需要一台代理服务器，而代理服务器能被外部网络访问的同时又跟真实服务器在同一个网络环境，当然也可能是同一台服务器，端口不同而已。</p>
+<p>反向代理通过<code>proxy_pass</code>指令来实现。</p>
+<p>启动一个Java Web项目，端口号为8081</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen       80;</span><br><span class="line">    server_name  localhost;</span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line">        proxy_pass http://localhost:8081;</span><br><span class="line">        proxy_set_header Host $host:$server_port;</span><br><span class="line">        # 设置用户ip地址</span><br><span class="line">         proxy_set_header X-Forwarded-For $remote_addr;</span><br><span class="line">         # 当请求服务器出错去寻找其他服务器</span><br><span class="line">         proxy_next_upstream error timeout invalid_header http_500 http_502 http_503;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当我们访问localhost的时候，就相当于访问 <code>localhost:8081</code>了</p>
+<h2 id="四、负载均衡"><a href="#四、负载均衡" class="headerlink" title="四、负载均衡"></a><strong>四、负载均衡</strong></h2><p>负载均衡也是Nginx常用的一个功能，负载均衡其意思就是分摊到多个操作单元上进行执行，例如Web服务器、FTP服务器、企业关键应用服务器和其它关键任务服务器等，从而共同完成工作任务。</p>
+<p>简单而言就是当有2台或以上服务器时，根据规则随机的将请求分发到指定的服务器上处理，负载均衡配置一般都需要同时配置反向代理，通过反向代理跳转到负载均衡。而Nginx目前支持自带3种负载均衡策略，还有2种常用的第三方策略。</p>
+<p>负载均衡通过upstream指令来实现。</p>
+<h4 id="1-RR-round-robin-轮询-默认"><a href="#1-RR-round-robin-轮询-默认" class="headerlink" title="1. RR(round robin :轮询 默认)"></a>1. RR(round robin :轮询 默认)</h4><p>每个请求按时间顺序逐一分配到不同的后端服务器，也就是说第一次请求分配到第一台服务器上，第二次请求分配到第二台服务器上，如果只有两台服务器，第三次请求继续分配到第一台上，这样循环轮询下去，也就是服务器接收请求的比例是 1:1， 如果后端服务器down掉，能自动剔除。轮询是默认配置，不需要太多的配置</p>
+<p>同一个项目分别使用8081和8082端口启动项目</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">upstream web_servers &#123;</span><br><span class="line">   server localhost:8081;</span><br><span class="line">   server localhost:8082;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">    listen       80;</span><br><span class="line">    server_name  localhost;</span><br><span class="line">    #access_log  logs/host.access.log  main;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line">        proxy_pass http://web_servers;</span><br><span class="line">        # 必须指定Header Host</span><br><span class="line">        proxy_set_header Host $host:$server_port;</span><br><span class="line">    &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>访问地址仍然可以获得响应 <code>http://localhost/api/user/login?username=zhangsan&amp;password=111111</code> ，这种方式是轮询的</p>
+<h4 id="2-权重"><a href="#2-权重" class="headerlink" title="2. 权重"></a>2. 权重</h4><p>指定轮询几率，weight和访问比率成正比, 也就是服务器接收请求的比例就是各自配置的weight的比例，用于后端服务器性能不均的情况,比如服务器性能差点就少接收点请求，服务器性能好点就多处理点请求。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">upstream test &#123;</span><br><span class="line">    server localhost:8081 weight=1;</span><br><span class="line">    server localhost:8082 weight=3;</span><br><span class="line">    server localhost:8083 weight=4 backup;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>示例是4次请求只有一次被分配到8081上，其他3次分配到8082上。backup是指热备，只有当8081和8082都宕机的情况下才走8083</p>
+<h4 id="3-ip-hash"><a href="#3-ip-hash" class="headerlink" title="3. ip_hash"></a>3. ip_hash</h4><p>上面的2种方式都有一个问题，那就是下一个请求来的时候请求可能分发到另外一个服务器，当我们的程序不是无状态的时候(采用了session保存数据)，这时候就有一个很大的很问题了，比如把登录信息保存到了session中，那么跳转到另外一台服务器的时候就需要重新登录了，所以很多时候我们需要一个客户只访问一个服务器，那么就需要用iphash了，iphash的每个请求按访问ip的hash结果分配，这样每个访客固定访问一个后端服务器，可以解决session的问题。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">upstream test &#123;</span><br><span class="line">    ip_hash;</span><br><span class="line">    server localhost:8080;</span><br><span class="line">    server localhost:8081;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-fair-第三方"><a href="#4-fair-第三方" class="headerlink" title="4. fair(第三方)"></a>4. fair(第三方)</h4><p>按后端服务器的响应时间来分配请求，响应时间短的优先分配。这个配置是为了更快的给用户响应</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">upstream backend &#123;</span><br><span class="line">    fair;</span><br><span class="line">    server localhost:8080;</span><br><span class="line">    server localhost:8081;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-url-hash-第三方"><a href="#5-url-hash-第三方" class="headerlink" title="5. url_hash(第三方)"></a>5. url_hash(第三方)</h4><p>按访问url的hash结果来分配请求，使每个url定向到同一个后端服务器，后端服务器为缓存时比较有效。在upstream中加入hash语句，server语句中不能写入weight等其他的参数，<code>hash_method</code>是使用的hash算法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">upstream backend &#123;</span><br><span class="line">    hash $request_uri;</span><br><span class="line">    hash_method crc32;</span><br><span class="line">    server localhost:8080;</span><br><span class="line">    server localhost:8081;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以上5种负载均衡各自适用不同情况下使用，所以可以根据实际情况选择使用哪种策略模式,不过fair和url_hash需要安装第三方模块才能使用。</p>
+<h2 id="五、动静分离"><a href="#五、动静分离" class="headerlink" title="五、动静分离"></a><strong>五、动静分离</strong></h2><p>动静分离是让动态网站里的动态网页根据一定规则把不变的资源和经常变的资源区分开来，动静资源做好了拆分以后，我们就可以根据静态资源的特点将其做缓存操作，这就是网站静态化处理的核心思路。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">upstream web_servers &#123;</span><br><span class="line">       server localhost:8081;</span><br><span class="line">       server localhost:8082;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">    listen       80;</span><br><span class="line">    server_name  localhost;</span><br><span class="line"></span><br><span class="line">    set $doc_root /usr/local/var/www;</span><br><span class="line"></span><br><span class="line">    location ~* \.(gif|jpg|jpeg|png|bmp|ico|swf|css|js)$ &#123;</span><br><span class="line">       root $doc_root/img;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line">        proxy_pass http://web_servers;</span><br><span class="line">        # 必须指定Header Host</span><br><span class="line">        proxy_set_header Host $host:$server_port;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    error_page 500 502 503 504  /50x.html;</span><br><span class="line">    location = /50x.html &#123;</span><br><span class="line">        root $doc_root;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="六、其他"><a href="#六、其他" class="headerlink" title="六、其他"></a><strong>六、其他</strong></h2><h4 id="1-return指令"><a href="#1-return指令" class="headerlink" title="1.return指令"></a>1.return指令</h4><p>返回http状态码 和 可选的第二个参数可以是重定向的URL</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">location /permanently/moved/url &#123;</span><br><span class="line">    return 301 http://www.example.com/moved/here;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-rewrite指令"><a href="#2-rewrite指令" class="headerlink" title="2. rewrite指令"></a>2. rewrite指令</h4><p>重写URI请求 rewrite，通过使用rewrite指令在请求处理期间多次修改请求URI，该指令具有一个可选参数和两个必需参数。</p>
+<p>第一个(必需)参数是请求URI必须匹配的正则表达式。</p>
+<p>第二个参数是用于替换匹配URI的URI。</p>
+<p>可选的第三个参数是可以停止进一步重写指令的处理或发送重定向(代码301或302)的标志</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">location /users/ &#123;</span><br><span class="line">    rewrite ^/users/(.*)$ /show?user=$1 break;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-error-page指令"><a href="#3-error-page指令" class="headerlink" title="3. error_page指令"></a>3. error_page指令</h4><p>使用error_page指令，您可以配置NGINX返回自定义页面以及错误代码，替换响应中的其他错误代码，或将浏览器重定向到其他URI。在以下示例中，<code>error_page</code>指令指定要返回404页面错误代码的页面(&#x2F;404.html)。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">error_page 404 /404.html;</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-日志"><a href="#4-日志" class="headerlink" title="4. 日志"></a>4. 日志</h4><p>访问日志：需要开启压缩 gzip on; 否则不生成日志文件，打开<code>log_format</code>、<code>access_log</code>注释</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">log_format  main  &#x27;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &#x27;</span><br><span class="line">                      &#x27;$status $body_bytes_sent &quot;$http_referer&quot; &#x27;</span><br><span class="line">                      &#x27;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&#x27;;</span><br><span class="line"></span><br><span class="line">access_log  /usr/local/etc/nginx/logs/host.access.log  main;</span><br><span class="line"></span><br><span class="line">gzip  on;</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-deny-指令"><a href="#5-deny-指令" class="headerlink" title="5. deny 指令"></a>5. deny 指令</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 禁止访问某个目录</span><br><span class="line">location ~* \.(txt|doc)$&#123;</span><br><span class="line">    root $doc_root;</span><br><span class="line">    deny all;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="6-内置变量"><a href="#6-内置变量" class="headerlink" title="6. 内置变量"></a>6. 内置变量</h4><p>nginx的配置文件中可以使用的内置变量以美元符<code>$</code>开始，也有人叫全局变量。其中，部分预定义的变量的值是可以改变的。</p>
+<ul>
+<li><code>$args</code> ：<code>#</code>这个变量等于请求行中的参数，同<code>$query_string</code></li>
+<li><code>$content_length</code> ：请求头中的Content-length字段。</li>
+<li><code>$content_type</code> ：请求头中的Content-Type字段。</li>
+<li><code>$document_root</code> ：当前请求在root指令中指定的值。</li>
+<li><code>$host</code> ：请求主机头字段，否则为服务器名称。</li>
+<li><code>$http_user_agent</code> ：客户端agent信息</li>
+<li><code>$http_cookie</code> ：客户端cookie信息</li>
+<li><code>$limit_rate</code> ：这个变量可以限制连接速率。</li>
+<li><code>$request_method</code> ：客户端请求的动作，通常为GET或POST。</li>
+<li><code>$remote_addr</code> ：客户端的IP地址。</li>
+<li><code>$remote_port</code> ：客户端的端口。</li>
+<li><code>$remote_user</code> ：已经经过Auth Basic Module验证的用户名。</li>
+<li><code>$request_filename</code> ：当前请求的文件路径，由root或alias指令与URI请求生成。</li>
+<li><code>$scheme</code> ：HTTP方法（如http，https）。</li>
+<li><code>$server_protocol</code> ：请求使用的协议，通常是HTTP&#x2F;1.0或HTTP&#x2F;1.1。</li>
+<li><code>$server_addr</code> ：服务器地址，在完成一次系统调用后可以确定这个值。</li>
+<li><code>$server_name</code> ：服务器名称。</li>
+<li><code>$server_port</code> ：请求到达服务器的端口号。</li>
+<li><code>$request_uri</code> ：包含请求参数的原始URI，不包含主机名，如：”<code>/foo/bar.php?arg=baz</code>”。</li>
+<li><code>$uri</code> ：不带请求参数的当前URI，<code>$uri</code>不包含主机名，如”<code>/foo/bar.html</code>”。</li>
+<li><code>$document_uri</code> ：与<code>$uri</code>相同</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">CodeZhong</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://zibizhong.github.io/2022/11/01/Nginx/">http://zibizhong.github.io/2022/11/01/Nginx/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://zibizhong.github.io" target="_blank">CodeZhongBlog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="/images/background.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://fastly.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2022/10/24/Java%E9%9D%A2%E8%AF%95/"><img class="next-cover" src="/images/background.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Java面试</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81HTTP%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-number">1.</span> <span class="toc-text">一、HTTP服务器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E9%9D%99%E6%80%81%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-number">2.</span> <span class="toc-text">二、静态服务器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#location%E4%BC%98%E5%85%88%E7%BA%A7"><span class="toc-number">2.0.1.</span> <span class="toc-text">location优先级</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86"><span class="toc-number">3.</span> <span class="toc-text">三、反向代理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1"><span class="toc-number">4.</span> <span class="toc-text">四、负载均衡</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-RR-round-robin-%E8%BD%AE%E8%AF%A2-%E9%BB%98%E8%AE%A4"><span class="toc-number">4.0.1.</span> <span class="toc-text">1. RR(round robin :轮询 默认)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E6%9D%83%E9%87%8D"><span class="toc-number">4.0.2.</span> <span class="toc-text">2. 权重</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-ip-hash"><span class="toc-number">4.0.3.</span> <span class="toc-text">3. ip_hash</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-fair-%E7%AC%AC%E4%B8%89%E6%96%B9"><span class="toc-number">4.0.4.</span> <span class="toc-text">4. fair(第三方)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-url-hash-%E7%AC%AC%E4%B8%89%E6%96%B9"><span class="toc-number">4.0.5.</span> <span class="toc-text">5. url_hash(第三方)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E5%8A%A8%E9%9D%99%E5%88%86%E7%A6%BB"><span class="toc-number">5.</span> <span class="toc-text">五、动静分离</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E5%85%B6%E4%BB%96"><span class="toc-number">6.</span> <span class="toc-text">六、其他</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-return%E6%8C%87%E4%BB%A4"><span class="toc-number">6.0.1.</span> <span class="toc-text">1.return指令</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-rewrite%E6%8C%87%E4%BB%A4"><span class="toc-number">6.0.2.</span> <span class="toc-text">2. rewrite指令</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-error-page%E6%8C%87%E4%BB%A4"><span class="toc-number">6.0.3.</span> <span class="toc-text">3. error_page指令</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-%E6%97%A5%E5%BF%97"><span class="toc-number">6.0.4.</span> <span class="toc-text">4. 日志</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-deny-%E6%8C%87%E4%BB%A4"><span class="toc-number">6.0.5.</span> <span class="toc-text">5. deny 指令</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-%E5%86%85%E7%BD%AE%E5%8F%98%E9%87%8F"><span class="toc-number">6.0.6.</span> <span class="toc-text">6. 内置变量</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/headImg.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">CodeZhong</div><div class="author-info__description"></div></div><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/zibizhong" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="/2385172737@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">微信公众号: 自闭钟同学</div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2022 By CodeZhong</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/chenxz21/hexo-theme-bcxm">Bcxm</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">本地搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://fastly.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script type="text/javascript" src="https://fastly.jsdelivr.net/npm/leancloud-storage@4.10.0/dist/av-min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://fastly.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-nest.min.js"></script><script id="click-heart" src="https://fastly.jsdelivr.net/npm/butterfly-extsrc@1/dist/click-heart.min.js" async="async" mobile="false"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
